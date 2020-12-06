@@ -6,6 +6,7 @@ from os.path import join, getsize
 class duplicates:
     # Define hash function
     def hashfile(file, blocksize=65536):
+
         afile = open(file, 'rb')
         hasher = hashlib.md5()
         buf = afile.read(blocksize)
@@ -15,17 +16,17 @@ class duplicates:
         afile.close()
         return hasher.hexdigest()
 
+    def filelist(path):
+
+        full_files = []
+        for root, dirs, files in os.walk(path):
+            full_files.extend([join(root, x) for x in files])
+
+        return full_files
 '''
 path = 'C:/Users/carst/Google Drive'
 csv_output = 'C:/Users/carst/duplicates.csv'
 csv_output2 = 'C:/Users/carst/only_duplicates.csv'
-
-
-
-# Create list of all files
-full_files = []
-for root, dirs, files in os.walk(path):
-    full_files.extend([join(root, x) for x in files])
 
 # Calculate checksum of each file
 checksum = []
