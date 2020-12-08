@@ -3,9 +3,12 @@ import pandas as pd
 import os
 from os.path import join, getsize
 
-class duplicates:
-    # Define hash function
-    def hashfile(file, blocksize=65536):
+class Duplicates:
+
+    def __init__(self):
+        pass
+
+    def hashfile(self, file, blocksize=65536):
 
         afile = open(file, 'rb')
         hasher = hashlib.md5()
@@ -14,15 +17,25 @@ class duplicates:
             hasher.update(buf)
             buf = afile.read(blocksize)
         afile.close()
-        return hasher.hexdigest()
+        self.hash = hasher.hexdigest()
 
-    def filelist(path):
+        return self.hash
 
-        full_files = []
-        for root, dirs, files in os.walk(path):
-            full_files.extend([join(root, x) for x in files])
+    @staticmethod
+    def filelist(filepath):
 
-        return full_files
+        files = ['{}\\{}'.format(filepath, x) for x in os.listdir(filepath)]
+        return files
+
+    def hashtable(files):
+        print(files)
+        hash = []
+        for file in files:
+                print(file, end='\r')
+                hash.extend([self.hashfile(file)])
+
+        return hash
+
 '''
 path = 'C:/Users/carst/Google Drive'
 csv_output = 'C:/Users/carst/duplicates.csv'
