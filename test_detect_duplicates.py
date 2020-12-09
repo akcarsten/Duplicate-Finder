@@ -37,3 +37,16 @@ class TestDetectDuplicates(unittest.TestCase):
             inputfile = self.duplicates.filelist(self.output_path)
             self.assertEqual(self.duplicates.hashtable(inputfile),
                              ['c137909ea3e82fc45bc17ccef8c691dc'])
+
+        def test_detect_dupliacte(self):
+
+            start_file = self.duplicates.filelist(self.output_path)
+            name = start_file[0].split('.csv')
+            duplicatefile = '{}_duplicate.csv'.format(name[0])
+
+            shutil.copy(start_file[0], duplicatefile)
+
+            inputfiles = self.duplicates.filelist(self.output_path)
+            result = self.duplicates.hashtable(inputfiles)
+
+            self.assertEqual(result[0], result[1])
