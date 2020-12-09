@@ -6,7 +6,7 @@ from os.path import join, getsize
 class Duplicates:
 
     def __init__(self):
-        pass
+        self.hash = []
 
     def hashfile(self, file, blocksize=65536):
 
@@ -27,7 +27,7 @@ class Duplicates:
         files = ['{}\\{}'.format(filepath, x) for x in os.listdir(filepath)]
         return files
 
-    def hashtable(files):
+    def hashtable(self, files):
         print(files)
         hash = []
         for file in files:

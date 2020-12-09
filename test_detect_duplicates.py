@@ -32,6 +32,8 @@ class TestDetectDuplicates(unittest.TestCase):
             self.assertEqual(self.duplicates.filelist(self.output_path),
                              ['tmp\\testFile.csv'])
 
-        def test_fullfile_function(self):
+        def test_hashtable_function(self):
 
-            print(self.duplicates.hashtable(self.output_path))
+            inputfile = self.duplicates.filelist(self.output_path)
+            self.assertEqual(self.duplicates.hashtable(inputfile),
+                             ['c137909ea3e82fc45bc17ccef8c691dc'])
