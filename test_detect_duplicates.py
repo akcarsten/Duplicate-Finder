@@ -11,6 +11,7 @@ class TestDetectDuplicates(unittest.TestCase):
             self.output_path = 'tmp'
             self.output_file = '{}/duplicates.csv'.format(self.output_path)
             self.test_file = '{}/testFile.csv'.format(self.output_path)
+            self.expected_hash = 'c137909ea3e82fc45bc17ccef8c691dc'
 
             self.duplicates = Duplicates()
 
@@ -25,7 +26,7 @@ class TestDetectDuplicates(unittest.TestCase):
         def test_hash_function(self):
 
                 self.assertEqual(self.duplicates.hashfile(self.test_file),
-                                 'c137909ea3e82fc45bc17ccef8c691dc')
+                                 self.expected_hash)
 
         def test_fullfile_function(self):
 
@@ -36,7 +37,7 @@ class TestDetectDuplicates(unittest.TestCase):
 
             inputfile = self.duplicates.filelist(self.output_path)
             self.assertEqual(self.duplicates.hashtable(inputfile),
-                             ['c137909ea3e82fc45bc17ccef8c691dc'])
+                             [self.expected_hash])
 
         def test_detect_dupliacte(self):
 
