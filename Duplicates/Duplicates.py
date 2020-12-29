@@ -1,7 +1,6 @@
 import hashlib
-import pandas as pd
 import os
-from os.path import join, getsize
+
 
 class Duplicates:
 
@@ -11,8 +10,12 @@ class Duplicates:
     @staticmethod
     def filelist(filepath):
 
-        files = ['{}\\{}'.format(filepath, x) for x in os.listdir(filepath)]
-        return files
+        file_list = []
+        for path, subdirs, files in os.walk(filepath):
+            for name in files:
+                file_list.append(os.path.join(path, name))
+
+        return file_list
 
     def hashfile(self, file, blocksize=65536):
 
@@ -29,9 +32,9 @@ class Duplicates:
 
     def hashtable(self, files):
 
-        hash = []
+        hash_identifier = []
         for file in files:
-                print(file, end='\r')
-                hash.extend([self.hashfile(file)])
+            print(file, end='\r')
+            hash_identifier.extend([self.hashfile(file)])
 
-        return hash
+        return hash_identifier
