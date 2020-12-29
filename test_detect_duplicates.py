@@ -38,7 +38,7 @@ class TestDetectDuplicates(unittest.TestCase):
         sub_folder = os.path.join(self.output_path, 'sub_folder')
         os.mkdir(sub_folder)
 
-        sub_folder_file = os.path.join(sub_folder, os.path.split(self.output_file)[1])
+        sub_folder_file = os.path.join(sub_folder, os.path.split(self.duplicate_file)[1])
 
         shutil.copy(self.original_file, sub_folder_file)
 
