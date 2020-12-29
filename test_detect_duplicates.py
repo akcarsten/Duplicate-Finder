@@ -24,17 +24,23 @@ class TestDetectDuplicates(unittest.TestCase):
         shutil.rmtree(self.output_path)
 
     def test_hash_method(self):
-
         self.assertEqual(self.duplicates.hashfile(self.original_file),
                          self.expected_hash)
 
     def test_fullfile_without_subfolders(self):
-
         self.assertEqual(self.duplicates.filelist(self.output_path)[0],
                          self.original_file)
 
-    def test_fullfile_with_subfolders(self):
+    def test_fullfile_with_invalid_characters(self):
+        invalid_file = r'\?\{}\{}.csv'.format(os.path.abspath(self.output_path), 'tooLong' * 40)
 
+        os.makedirs(invalid_file)
+
+        input_file = self.duplicates.filelist(self.output_path)
+
+        self.duplicates.hashtable(input_file)
+
+    def test_fullfile_with_subfolders(self):
         sub_folder = os.path.join(self.output_path, 'sub_folder')
         os.mkdir(sub_folder)
 
@@ -46,13 +52,11 @@ class TestDetectDuplicates(unittest.TestCase):
                          [self.original_file, sub_folder_file])
 
     def test_hashtable_method(self):
-
         input_file = self.duplicates.filelist(self.output_path)
         self.assertEqual(self.duplicates.hashtable(input_file),
                          [self.expected_hash])
 
     def test_detection_of_duplicates(self):
-
         shutil.copy(self.original_file, self.duplicate_file)
 
         input_files = self.duplicates.filelist(self.output_path)
