@@ -90,3 +90,7 @@ class TestDetectDuplicates(unittest.TestCase):
 
         self.assertEqual(list(result['file']),
                          ['tmp\\duplicateFile.csv', 'tmp\\originalFile.csv'])
+
+    def test_compare_folders_basic_functinality(self):
+        print('This functionality is not implemented yet.')
+        self.duplicates.compare_folders(self.output_path, self.output_path)

@@ -46,8 +46,8 @@ class Duplicates:
 
         return hash_identifier
 
-    def list_all_duplicates(self, folder, to_csv=False, csv_path='./'):
-        input_files = self.filelist(folder)
+    def list_all_duplicates(self, folder, to_csv=False, csv_path='./', ext=None):
+        input_files = self.filelist(folder, ext=ext)
 
         df = pd.DataFrame(columns=['file', 'hash'])
 
