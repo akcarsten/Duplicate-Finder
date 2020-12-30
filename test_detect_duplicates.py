@@ -97,12 +97,12 @@ class TestDetectDuplicates(unittest.TestCase):
                           os.path.abspath('tmp\\originalFile.csv')])
 
     def test_compare_folders_basic_functinality(self):
-        print('This functionality is not implemented yet.')
-
         reference_folder = os.path.join(self.output_path, 'reference_folder')
+        compare_folder = os.path.join(self.output_path, 'compare_folder')
+
+        self.copy_folder(compare_folder)
         reference_folder_file = self.copy_folder(reference_folder)
 
-        compare_folder = os.path.join(self.output_path, 'compare_folder')
-        compare_folder_file = self.copy_folder(compare_folder)
+        duplicates = self.duplicates.compare_folders(reference_folder, reference_folder)
 
-        self.duplicates.compare_folders(reference_folder, reference_folder)
+        self.assertEqual(duplicates['file'].values[0], os.path.abspath(reference_folder_file))
