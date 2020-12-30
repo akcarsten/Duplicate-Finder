@@ -23,6 +23,14 @@ class TestDetectDuplicates(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.output_path)
 
+    def copy_folder(self, destination_folder):
+        os.mkdir(destination_folder)
+
+        destination_folder_file = os.path.join(destination_folder, os.path.split(self.duplicate_file)[1])
+        shutil.copy(self.original_file, destination_folder_file)
+
+        return destination_folder_file
+
     def test_hash_method(self):
         self.assertEqual(self.duplicates.hashfile(self.original_file),
                          self.expected_hash)
@@ -33,11 +41,7 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_fullfile_method_with_subfolders(self):
         sub_folder = os.path.join(self.output_path, 'sub_folder')
-        os.mkdir(sub_folder)
-
-        sub_folder_file = os.path.join(sub_folder, os.path.split(self.duplicate_file)[1])
-
-        shutil.copy(self.original_file, sub_folder_file)
+        sub_folder_file = self.copy_folder(sub_folder)
 
         self.assertEqual(self.duplicates.filelist(self.output_path),
                          [self.original_file, sub_folder_file])
