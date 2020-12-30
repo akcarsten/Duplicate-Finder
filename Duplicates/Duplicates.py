@@ -30,7 +30,7 @@ class Duplicates:
             afile.close()
             self.hash = hasher.hexdigest()
 
-        except:
+        except OSError:
             self.hash = 'File does not exist'
 
         return self.hash
@@ -69,4 +69,3 @@ class Duplicates:
         duplicates = self.list_all_duplicates(folder)
 
         return duplicates[duplicates['hash'] == file_hash]
-

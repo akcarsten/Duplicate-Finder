@@ -27,11 +27,11 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(self.duplicates.hashfile(self.original_file),
                          self.expected_hash)
 
-    def test_fullfile_without_subfolders(self):
+    def test_fullfile_method_without_subfolders(self):
         self.assertEqual(self.duplicates.filelist(self.output_path)[0],
                          self.original_file)
 
-    def test_fullfile_with_subfolders(self):
+    def test_fullfile_method_with_subfolders(self):
         sub_folder = os.path.join(self.output_path, 'sub_folder')
         os.mkdir(sub_folder)
 
