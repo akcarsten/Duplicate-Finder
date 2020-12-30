@@ -74,3 +74,16 @@ class TestDetectDuplicates(unittest.TestCase):
 
         expected = os.path.join(self.output_path, 'duplicateFile.csv')
         self.assertTrue(os.path.isfile(expected))
+
+    def test_find_duplicates_basic_functinality(self):
+        shutil.copy(self.original_file, self.duplicate_file)
+
+        file = self.duplicates.filelist(self.output_path)[0]
+
+        result = self.duplicates.find_duplicates(file, self.output_path)
+
+        self.assertEqual(result['hash'].unique()[0],
+                         self.expected_hash)
+
+        self.assertEqual(list(result['file']),
+                         ['tmp\\duplicateFile.csv', 'tmp\\originalFile.csv'])
