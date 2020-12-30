@@ -31,15 +31,6 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(self.duplicates.filelist(self.output_path)[0],
                          self.original_file)
 
-    def test_fullfile_with_invalid_characters(self):
-        invalid_file = r'\?\{}\{}.csv'.format(os.path.abspath(self.output_path), 'tooLong' * 40)
-
-        os.makedirs(invalid_file)
-
-        input_file = self.duplicates.filelist(self.output_path)
-
-        self.duplicates.hashtable(input_file)
-
     def test_fullfile_with_subfolders(self):
         sub_folder = os.path.join(self.output_path, 'sub_folder')
         os.mkdir(sub_folder)
@@ -63,3 +54,23 @@ class TestDetectDuplicates(unittest.TestCase):
         result = self.duplicates.hashtable(input_files)
 
         self.assertEqual(result[0], result[1])
+
+    def test_list_all_duplicates_basic_functionality(self):
+        shutil.copy(self.original_file, self.duplicate_file)
+
+        result = self.duplicates.list_all_duplicates(self.output_path)
+
+        self.assertEqual(list(result.columns), ['file', 'hash'])
+
+        self.assertEqual(result['hash'].unique()[0],
+                         self.expected_hash)
+
+        self.assertEqual(result['hash'].shape[0], 2)
+
+    def test_list_all_duplicates_save_csv(self):
+        shutil.copy(self.original_file, self.duplicate_file)
+
+        self.duplicates.list_all_duplicates(self.output_path, to_csv=True, csv_path=self.output_path)
+
+        expected = os.path.join(self.output_path, 'duplicateFile.csv')
+        self.assertTrue(os.path.isfile(expected))
