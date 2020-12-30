@@ -8,7 +8,7 @@ from Duplicates import Duplicates
 class TestDetectDuplicates(unittest.TestCase):
 
     def setUp(self):
-        self.output_path = 'tmp'
+        self.output_path = './tmp'
         self.original_file = os.path.join(self.output_path, 'originalFile.csv')
         self.duplicate_file = os.path.join(self.output_path, 'duplicateFile.csv')
         self.expected_hash = 'c137909ea3e82fc45bc17ccef8c691dc'
@@ -89,7 +89,8 @@ class TestDetectDuplicates(unittest.TestCase):
                          self.expected_hash)
 
         self.assertEqual(list(result['file']),
-                         ['tmp\\duplicateFile.csv', 'tmp\\originalFile.csv'])
+                         [os.path.abspath('tmp\\duplicateFile.csv'),
+                          os.path.abspath('tmp\\originalFile.csv')])
 
     def test_compare_folders_basic_functinality(self):
         print('This functionality is not implemented yet.')

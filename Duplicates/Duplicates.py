@@ -9,6 +9,10 @@ class Duplicates:
         self.hash = []
 
     @staticmethod
+    def __format_path__(file):
+        return os.path.abspath([file.replace('/', os.path.sep)][0])
+
+    @staticmethod
     def filelist(filepath, ext=None):
 
         file_list = []
@@ -38,6 +42,8 @@ class Duplicates:
         return self.hash
 
     def hashtable(self, files):
+        if type(files) is not list:
+            files = [files]
 
         hash_identifier = []
         for file in files:
@@ -47,6 +53,7 @@ class Duplicates:
         return hash_identifier
 
     def list_all_duplicates(self, folder, to_csv=False, csv_path='./', ext=None):
+        folder = self.__format_path__(folder)
         input_files = self.filelist(folder, ext=ext)
 
         df = pd.DataFrame(columns=['file', 'hash'])
@@ -64,10 +71,18 @@ class Duplicates:
         return duplicates
 
     def find_duplicates(self, file, folder):
-        file_path = [file.replace('/', os.path.sep)]
+        file = self.__format_path__(file)
+        folder = self.__format_path__(folder)
 
-        file_hash = self.hashtable(file_path)[0]
+        file_hash = self.hashtable(file)
 
         duplicates = self.list_all_duplicates(folder)
 
+        if len(file_hash) is 1:
+            file_hash = file_hash[0]
+
         return duplicates[duplicates['hash'] == file_hash]
+
+    def compare_folders(self, reference_folder, compare_folder):
+        reference_folder = self.__format_path__(reference_folder)
+        compare_folder = self.__format_path__(compare_folder)
