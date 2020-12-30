@@ -9,12 +9,14 @@ class Duplicates:
         self.hash = []
 
     @staticmethod
-    def filelist(filepath):
+    def filelist(filepath, ext=None):
 
         file_list = []
         for path, subdirs, files in os.walk(filepath):
             for name in files:
-                file_list.append(os.path.join(path, name))
+                _, extension = os.path.splitext(name)
+                if ext is None or extension == ext:
+                    file_list.append(os.path.join(path, name))
 
         return file_list
 

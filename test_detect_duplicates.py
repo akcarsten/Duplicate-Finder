@@ -42,6 +42,9 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(self.duplicates.filelist(self.output_path),
                          [self.original_file, sub_folder_file])
 
+    def test_fullfile_method_with_file_extension(self):
+        self.assertEqual(self.duplicates.filelist(self.output_path, ext='.oddExtension'), [])
+
     def test_hashtable_method(self):
         input_file = self.duplicates.filelist(self.output_path)
         self.assertEqual(self.duplicates.hashtable(input_file),
