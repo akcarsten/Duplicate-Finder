@@ -8,6 +8,17 @@ class Duplicates:
     def __init__(self):
         self.hash = []
 
+    def __create_table__(self, folder, ext):
+        folder = self.__format_path__(folder)
+        input_files = self.filelist(folder, ext=ext)
+
+        df = pd.DataFrame(columns=['file', 'hash'])
+
+        df['file'] = input_files
+        df['hash'] = self.hashtable(input_files)
+
+        return df
+
     @staticmethod
     def __format_path__(file):
         return os.path.abspath([file.replace('/', os.path.sep)][0])
@@ -23,6 +34,11 @@ class Duplicates:
                     file_list.append(os.path.join(path, name))
 
         return file_list
+
+    @staticmethod
+    def save_csv(csv_path, duplicates):
+        csv_file = os.path.join(csv_path, 'duplicates.csv')
+        duplicates.to_csv(csv_file, index=False)
 
     def hashfile(self, file, blocksize=65536):
 
@@ -53,20 +69,12 @@ class Duplicates:
         return hash_identifier
 
     def list_all_duplicates(self, folder, to_csv=False, csv_path='./', ext=None):
-        folder = self.__format_path__(folder)
-        input_files = self.filelist(folder, ext=ext)
-
-        df = pd.DataFrame(columns=['file', 'hash'])
-
-        df['file'] = input_files
-        df['hash'] = self.hashtable(input_files)
-
+        df = self.__create_table__(folder, ext)
         duplicates = df[df['hash'].duplicated(keep=False)]
         duplicates.sort_values(by='hash', inplace=True)
 
         if to_csv is True:
-            csv_file = os.path.join(csv_path, 'duplicates.csv')
-            duplicates.to_csv(csv_file, index=False)
+            self.save_csv(csv_path, duplicates)
 
         return duplicates
 
@@ -83,6 +91,14 @@ class Duplicates:
 
         return duplicates[duplicates['hash'] == file_hash]
 
-    def compare_folders(self, reference_folder, compare_folder):
-        reference_folder = self.__format_path__(reference_folder)
-        compare_folder = self.__format_path__(compare_folder)
+    def compare_folders(self, reference_folder, compare_folder, to_csv=False, csv_path='./', ext=None):
+
+        df_reference = self.__create_table__(reference_folder, ext)
+        df_compare = self.__create_table__(compare_folder, ext)
+
+        duplicates = df_reference[df_reference['hash'] == df_compare['hash']]
+
+        if to_csv is True:
+            self.save_csv(csv_path, duplicates)
+
+        return duplicates

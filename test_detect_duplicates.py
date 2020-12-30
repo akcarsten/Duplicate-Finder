@@ -98,4 +98,11 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_compare_folders_basic_functinality(self):
         print('This functionality is not implemented yet.')
-        self.duplicates.compare_folders(self.output_path, self.output_path)
+
+        reference_folder = os.path.join(self.output_path, 'reference_folder')
+        reference_folder_file = self.copy_folder(reference_folder)
+
+        compare_folder = os.path.join(self.output_path, 'compare_folder')
+        compare_folder_file = self.copy_folder(compare_folder)
+
+        self.duplicates.compare_folders(reference_folder, reference_folder)
