@@ -41,9 +41,7 @@ class Duplicates:
         duplicates.to_csv(csv_file, index=False)
 
     def hashfile(self, file, blocksize=65536):
-
-        try:
-            afile = open(file, 'rb')
+        with open(file, 'rb') as afile:
             hasher = hashlib.md5()
             buf = afile.read(blocksize)
             while len(buf) > 0:
@@ -51,9 +49,6 @@ class Duplicates:
                 buf = afile.read(blocksize)
             afile.close()
             self.hash = hasher.hexdigest()
-
-        except OSError:
-            self.hash = 'File does not exist'
 
         return self.hash
 
