@@ -54,7 +54,7 @@ pipeline {
           post {
               always {
                   // Archive unit tests for the future
-                  junit allowEmptyResults: true, testResults: 'reports/test_detect_duplicates.xml'
+                  junit allowEmptyResults: true, testResults: 'reports/unit_tests.xml'
               }
           }
     }
