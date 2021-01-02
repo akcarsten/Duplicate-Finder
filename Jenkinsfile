@@ -40,7 +40,7 @@ pipeline {
                     '''
                 echo "Style check"
                 sh  ''' source activate ${BUILD_TAG}
-                        pylint test_detect_duplicates.py ./Duplicates/Duplicates.py 
+                        pylint test_detect_duplicates.py ./Duplicates/Duplicates.py || true
                     '''
             }
         }
