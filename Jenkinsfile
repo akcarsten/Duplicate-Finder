@@ -43,6 +43,12 @@ pipeline {
                         pylint test_detect_duplicates.py ./Duplicates/Duplicates.py || true
                     '''
             }
+            post {
+                always {
+                    // Archive coverage results
+                    junit allowEmptyResults: true, coverageResults: 'reports/coverage.xml'
+                }
+            }
         }
 
     stage('Unit tests') {
