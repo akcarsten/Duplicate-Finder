@@ -43,14 +43,6 @@ pipeline {
                         pylint test_detect_duplicates.py ./Duplicates/Duplicates.py || true
                     '''
             }
-            
-            post {
-                always {
-                    //cobertura coberturaReportFile: 'reports/coverage.xml'
-                }
-            }
-    
-            
         }
 
     stage('Unit tests') {
