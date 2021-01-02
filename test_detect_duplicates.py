@@ -1,7 +1,7 @@
 import unittest
-import pandas as pd
 import os.path
 import shutil
+import pandas as pd
 from Duplicates import Duplicates
 
 
@@ -26,7 +26,9 @@ class TestDetectDuplicates(unittest.TestCase):
     def copy_folder(self, destination_folder):
         os.mkdir(destination_folder)
 
-        destination_folder_file = os.path.join(destination_folder, os.path.split(self.duplicate_file)[1])
+        destination_folder_file = os.path.join(
+            destination_folder, os.path.split(self.duplicate_file)[1])
+
         shutil.copy(self.original_file, destination_folder_file)
 
         return destination_folder_file
@@ -77,7 +79,8 @@ class TestDetectDuplicates(unittest.TestCase):
     def test_list_all_duplicates_save_csv(self):
         shutil.copy(self.original_file, self.duplicate_file)
 
-        self.duplicates.list_all_duplicates(self.output_path, to_csv=True, csv_path=self.output_path)
+        self.duplicates.list_all_duplicates(
+            self.output_path, to_csv=True, csv_path=self.output_path)
 
         expected = os.path.join(self.output_path, 'duplicateFile.csv')
         self.assertTrue(os.path.isfile(expected))
