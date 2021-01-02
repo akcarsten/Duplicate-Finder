@@ -81,7 +81,7 @@ class Duplicates:
 
         duplicates = self.list_all_duplicates(folder)
 
-        if len(file_hash) is 1:
+        if len(file_hash) == 1:
             file_hash = file_hash[0]
 
         return duplicates[duplicates['hash'] == file_hash]
