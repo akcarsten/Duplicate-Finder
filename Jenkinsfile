@@ -43,6 +43,15 @@ pipeline {
                         pylint test_detect_duplicates.py ./Duplicates/Duplicates.py || true
                     '''
             }
+            
+            post {
+                always {
+                    junit 'reports/coverage.xml'
+                    step([$class: 'CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
+                }
+            }
+    
+            
         }
 
     stage('Unit tests') {
