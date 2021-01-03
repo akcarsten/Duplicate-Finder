@@ -101,6 +101,7 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(sorted(list(result['file'])),
                          [os.path.abspath('tmp{}duplicateFile.csv'.format(os.path.sep)),
                           os.path.abspath('tmp{}originalFile.csv'.format(os.path.sep))])
+        # sorting the list here to make the test run on Windows and Linux
 
     def test_compare_folders_basic_functinality(self):
         reference_folder = os.path.join(self.output_path, 'reference_folder')
