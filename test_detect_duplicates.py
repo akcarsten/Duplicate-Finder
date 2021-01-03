@@ -98,7 +98,7 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(result['hash'].unique()[0],
                          self.expected_hash)
 
-        self.assertEqual(list(result['file']),
+        self.assertEqual(sorted(list(result['file'])),
                          [os.path.abspath('tmp{}duplicateFile.csv'.format(os.path.sep)),
                           os.path.abspath('tmp{}originalFile.csv'.format(os.path.sep))])
 
