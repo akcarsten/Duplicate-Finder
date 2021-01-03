@@ -19,6 +19,8 @@ class TestDetectDuplicates(unittest.TestCase):
 
         df = pd.DataFrame(range(0, 5), columns=['test'])
         df.to_csv(self.original_file, line_terminator='\r\n')
+        # Choosing "\r\n" here because code was written on Windows
+        # but should also work on Linux machines with default "\n" line ending
 
     def tearDown(self):
         shutil.rmtree(self.output_path)
@@ -95,12 +97,10 @@ class TestDetectDuplicates(unittest.TestCase):
 
         self.assertEqual(result['hash'].unique()[0],
                          self.expected_hash)
-        
-        '''
+
         self.assertEqual(list(result['file']),
-                         [os.path.abspath('tmp\\duplicateFile.csv'),
-                          os.path.abspath('tmp\\originalFile.csv')])
-        '''
+                         [os.path.abspath('tmp{}duplicateFile.csv'.format(os.path.sep)),
+                          os.path.abspath('tmp{}originalFile.csv'.format(os.path.sep))])
 
     def test_compare_folders_basic_functinality(self):
         reference_folder = os.path.join(self.output_path, 'reference_folder')
