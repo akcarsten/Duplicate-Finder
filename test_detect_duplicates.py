@@ -18,7 +18,7 @@ class TestDetectDuplicates(unittest.TestCase):
         os.mkdir(self.output_path)
 
         df = pd.DataFrame(range(0, 5), columns=['test'])
-        df.to_csv(self.original_file, line_terminator='\n')
+        df.to_csv(self.original_file, line_terminator='\r\n')
 
     def tearDown(self):
         shutil.rmtree(self.output_path)
