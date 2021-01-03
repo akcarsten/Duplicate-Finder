@@ -33,11 +33,9 @@ class TestDetectDuplicates(unittest.TestCase):
 
         return destination_folder_file
 
-    '''
     def test_hash_method(self):
         self.assertEqual(self.duplicates.hashfile(self.original_file),
                          self.expected_hash)
-    '''
 
     def test_fullfile_method_without_subfolders(self):
         self.assertEqual(self.duplicates.filelist(self.output_path)[0],
@@ -74,10 +72,8 @@ class TestDetectDuplicates(unittest.TestCase):
 
         self.assertEqual(list(result.columns), ['file', 'hash'])
 
-        '''
         self.assertEqual(result['hash'].unique()[0],
                          self.expected_hash)
-        '''
 
         self.assertEqual(result['hash'].shape[0], 2)
 
@@ -97,11 +93,10 @@ class TestDetectDuplicates(unittest.TestCase):
 
         result = self.duplicates.find_duplicates(file, self.output_path)
 
-        '''
         self.assertEqual(result['hash'].unique()[0],
                          self.expected_hash)
         
-
+        '''
         self.assertEqual(list(result['file']),
                          [os.path.abspath('tmp\\duplicateFile.csv'),
                           os.path.abspath('tmp\\originalFile.csv')])
