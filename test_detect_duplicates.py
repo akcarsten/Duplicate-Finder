@@ -6,6 +6,7 @@ from Duplicates import Duplicates
 
 
 class TestDetectDuplicates(unittest.TestCase):
+    """ Class that holds all test functions"""
 
     def setUp(self):
         self.output_path = './tmp'

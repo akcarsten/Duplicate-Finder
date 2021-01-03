@@ -4,6 +4,7 @@ import os
 
 
 class Duplicates:
+    """ Duplicate class that holds all methods for finding duplicate files."""
 
     def __init__(self):
         self.hash = []
@@ -25,6 +26,9 @@ class Duplicates:
 
     @staticmethod
     def filelist(filepath, ext=None):
+        """ Lists all files in a folder including sub-folders.
+        If only files with a specific extension are of interest this can be specified by the ext argument
+        """
 
         file_list = []
         for path, subdirs, files in os.walk(filepath):
