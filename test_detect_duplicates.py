@@ -18,7 +18,7 @@ class TestDetectDuplicates(unittest.TestCase):
         os.mkdir(self.output_path)
 
         df = pd.DataFrame(range(0, 5), columns=['test'])
-        df.to_csv(self.original_file)
+        df.to_csv(self.original_file, line_terminator='\n')
 
     def tearDown(self):
         shutil.rmtree(self.output_path)
@@ -56,10 +56,8 @@ class TestDetectDuplicates(unittest.TestCase):
     def test_hashtable_method(self):
         input_file = self.duplicates.filelist(self.output_path)
 
-        '''
         self.assertEqual(self.duplicates.hashtable(input_file),
                          [self.expected_hash])
-        '''
 
     def test_detection_of_duplicates(self):
         shutil.copy(self.original_file, self.duplicate_file)
