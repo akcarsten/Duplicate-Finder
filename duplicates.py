@@ -6,7 +6,6 @@ import os
 def create_table(folder: str, ext: str = None) -> pd.DataFrame:
     """Create a Pandas dataframe with a column 'file' for the path to a file and a
     column 'hash' with the corresponding hash identifier."""
-
     folder = format_path(folder)
     input_files = filelist(folder, ext=ext)
 
@@ -20,14 +19,12 @@ def create_table(folder: str, ext: str = None) -> pd.DataFrame:
 
 def format_path(file: str) -> str:
     """Format a path according to the systems separator."""
-
     return os.path.abspath([file.replace('/', os.path.sep)][0])
 
 
 def filelist(filepath: str, ext: str = None) -> list:
     """ Lists all files in a folder including sub-folders.
     If only files with a specific extension are of interest this can be specified by the 'ext' parameter."""
-
     file_list = []
     for path, subdirs, files in os.walk(filepath):
         for name in files:
@@ -40,14 +37,12 @@ def filelist(filepath: str, ext: str = None) -> list:
 
 def save_csv(csv_path: str, duplicates: pd.DataFrame) -> None:
     """Save a Pandas dataframe as a csv file."""
-
     csv_file = os.path.join(csv_path, 'duplicates.csv')
     duplicates.to_csv(csv_file, index=False)
 
 
 def hashfile(file: str, blocksize: int = 65536) -> str:
     """Generate the hash of any file according to the md5 algorithm."""
-
     with open(file, 'rb') as afile:
         hasher = hashlib.md5()
         buf = afile.read(blocksize)
@@ -62,7 +57,6 @@ def hashfile(file: str, blocksize: int = 65536) -> str:
 
 def hashtable(files: list) -> list:
     """Go through a list of files and calculate their hash identifiers."""
-
     if type(files) is not list:
         files = [files]
 
@@ -80,7 +74,6 @@ def list_all_duplicates(folder: str,
     The returned dataframe contains all files, not only the duplicates.
     With the 'to_csv' parameter the results can also be saved in a .csv file.
     The location of that .csv file can be specified by the 'csv_path' parameter."""
-
     df = create_table(folder, ext)
     duplicates = df[df['hash'].duplicated(keep=False)]
     duplicates.sort_values(by='hash', inplace=True)
@@ -94,7 +87,6 @@ def list_all_duplicates(folder: str,
 def find_duplicates(file: str, folder: str) -> pd.DataFrame:
     """Search a folder for duplicates of a file of interest. In contrast to 'list_all_duplicates', this allows
     limiting the search to one particular file."""
-
     file = format_path(file)
     folder = format_path(folder)
 
@@ -114,7 +106,6 @@ def compare_folders(reference_folder: str, compare_folder: str,
     With the 'to_csv' parameter the results can also be saved in a .csv file.
     The location of that .csv file can be specified by the 'csv_path' parameter.
     Further the search can be limited to files with a specific extension via the 'ext' parameter."""
-
     df_reference = create_table(reference_folder, ext)
     df_compare = create_table(compare_folder, ext)
 
