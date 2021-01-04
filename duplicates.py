@@ -1,6 +1,7 @@
+"""Duplicates package to identify duplicate files."""
+import os
 import hashlib
 import pandas as pd
-import os
 
 
 def create_table(folder: str, ext: str = None) -> pd.DataFrame:
@@ -9,12 +10,12 @@ def create_table(folder: str, ext: str = None) -> pd.DataFrame:
     folder = format_path(folder)
     input_files = filelist(folder, ext=ext)
 
-    df = pd.DataFrame(columns=['file', 'hash'])
+    summary_df = pd.DataFrame(columns=['file', 'hash'])
 
-    df['file'] = input_files
-    df['hash'] = hashtable(input_files)
+    summary_df['file'] = input_files
+    summary_df['hash'] = hashtable(input_files)
 
-    return df
+    return summary_df
 
 
 def format_path(file: str) -> str:
@@ -24,9 +25,10 @@ def format_path(file: str) -> str:
 
 def filelist(filepath: str, ext: str = None) -> list:
     """ Lists all files in a folder including sub-folders.
-    If only files with a specific extension are of interest this can be specified by the 'ext' parameter."""
+    If only files with a specific extension are of interest
+    this can be specified by the 'ext' parameter."""
     file_list = []
-    for path, subdirs, files in os.walk(filepath):
+    for path, _, files in os.walk(filepath):
         for name in files:
             _, extension = os.path.splitext(name)
             if ext is None or extension == ext:
@@ -57,7 +59,7 @@ def hashfile(file: str, blocksize: int = 65536) -> str:
 
 def hashtable(files: list) -> list:
     """Go through a list of files and calculate their hash identifiers."""
-    if type(files) is not list:
+    if isinstance(files, list) is False:
         files = [files]
 
     hash_identifier = []
@@ -69,35 +71,38 @@ def hashtable(files: list) -> list:
 
 
 def list_all_duplicates(folder: str,
-                        to_csv: bool = False, csv_path: str = './', ext: str = None) -> pd.DataFrame:
+                        to_csv: bool = False,
+                        csv_path: str = './',
+                        ext: str = None) -> pd.DataFrame:
     """Go through a folder and find all duplicate files.
     The returned dataframe contains all files, not only the duplicates.
     With the 'to_csv' parameter the results can also be saved in a .csv file.
     The location of that .csv file can be specified by the 'csv_path' parameter."""
-    df = create_table(folder, ext)
-    duplicates = df[df['hash'].duplicated(keep=False)]
-    duplicates.sort_values(by='hash', inplace=True)
+    duplicate_files = create_table(folder, ext)
+    duplicate_files = duplicate_files[duplicate_files['hash'].duplicated(keep=False)]
+    duplicate_files.sort_values(by='hash', inplace=True)
 
     if to_csv is True:
-        save_csv(csv_path, duplicates)
+        save_csv(csv_path, duplicate_files)
 
-    return duplicates
+    return duplicate_files
 
 
 def find_duplicates(file: str, folder: str) -> pd.DataFrame:
-    """Search a folder for duplicates of a file of interest. In contrast to 'list_all_duplicates', this allows
+    """Search a folder for duplicates of a file of interest.
+    In contrast to 'list_all_duplicates', this allows
     limiting the search to one particular file."""
     file = format_path(file)
     folder = format_path(folder)
 
     file_hash = hashtable(file)
 
-    duplicates = list_all_duplicates(folder)
+    duplicate_files = list_all_duplicates(folder)
 
     if len(file_hash) == 1:
         file_hash = file_hash[0]
 
-    return duplicates[duplicates['hash'] == file_hash]
+    return duplicate_files[duplicate_files['hash'] == file_hash]
 
 
 def compare_folders(reference_folder: str, compare_folder: str,
@@ -109,9 +114,9 @@ def compare_folders(reference_folder: str, compare_folder: str,
     df_reference = create_table(reference_folder, ext)
     df_compare = create_table(compare_folder, ext)
 
-    duplicates = df_reference[df_reference['hash'] == df_compare['hash']]
+    duplicate_files = df_reference[df_reference['hash'] == df_compare['hash']]
 
     if to_csv is True:
-        save_csv(csv_path, duplicates)
+        save_csv(csv_path, duplicate_files)
 
-    return duplicates
+    return duplicate_files
