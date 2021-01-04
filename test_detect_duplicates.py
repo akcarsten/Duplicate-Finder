@@ -1,3 +1,4 @@
+"""Unit tests for the duplicates package"""
 import unittest
 import os.path
 import shutil
@@ -16,8 +17,8 @@ class TestDetectDuplicates(unittest.TestCase):
 
         os.mkdir(self.output_path)
 
-        df = pd.DataFrame(range(0, 5), columns=['test'])
-        df.to_csv(self.original_file, line_terminator='\r\n')
+        test_df = pd.DataFrame(range(0, 5), columns=['test'])
+        test_df.to_csv(self.original_file, line_terminator='\r\n')
         # Choosing "\r\n" here because code was written on Windows
         # but should also work on Linux machines with default "\n" line ending
 
@@ -74,7 +75,8 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(result[0], result[1])
 
     def test_list_all_duplicates_basic_functionality(self):
-        """Test the basic functionality of the package by validating the correct generation of the data frame."""
+        """Test the basic functionality of the package
+        by validating the correct generation of the data frame."""
         shutil.copy(self.original_file, self.duplicate_file)
 
         result = duplicates.list_all_duplicates(self.output_path)
