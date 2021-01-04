@@ -24,7 +24,8 @@ class TestDetectDuplicates(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.output_path)
 
-    def copy_folder(self, destination_folder):
+    def copy_folder(self, destination_folder: str):
+        """Create a copy of the original folder with its content."""
         os.mkdir(destination_folder)
 
         destination_folder_file = os.path.join(
@@ -35,14 +36,17 @@ class TestDetectDuplicates(unittest.TestCase):
         return destination_folder_file
 
     def test_hash_method(self):
+        """Test the generation of hash identifiers."""
         self.assertEqual(duplicates.hashfile(self.original_file),
                          self.expected_hash)
 
     def test_fullfile_method_without_subfolders(self):
+        """Test the detection of duplicate files without the presence of sub-folders."""
         self.assertEqual(duplicates.filelist(self.output_path)[0],
                          self.original_file)
 
     def test_fullfile_method_with_subfolders(self):
+        """Test the detection of duplicate files when there are files located in sub-folders."""
         sub_folder = os.path.join(self.output_path, 'sub_folder')
         sub_folder_file = self.copy_folder(sub_folder)
 
@@ -50,15 +54,18 @@ class TestDetectDuplicates(unittest.TestCase):
                          [self.original_file, sub_folder_file])
 
     def test_fullfile_method_with_file_extension(self):
+        """Test if the extension parameter works for identifying files of interest."""
         self.assertEqual(duplicates.filelist(self.output_path, ext='.oddExtension'), [])
 
     def test_hashtable_method(self):
+        """Test the generation of hash identifiers from a file list."""
         input_file = duplicates.filelist(self.output_path)
 
         self.assertEqual(duplicates.hashtable(input_file),
                          [self.expected_hash])
 
     def test_detection_of_duplicates(self):
+        """Test the correct identification of duplicate files."""
         shutil.copy(self.original_file, self.duplicate_file)
 
         input_files = duplicates.filelist(self.output_path)
@@ -67,6 +74,7 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(result[0], result[1])
 
     def test_list_all_duplicates_basic_functionality(self):
+        """Test the basic functionality of the package by validating the correct generation of the data frame."""
         shutil.copy(self.original_file, self.duplicate_file)
 
         result = duplicates.list_all_duplicates(self.output_path)
@@ -79,6 +87,7 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(result['hash'].shape[0], 2)
 
     def test_list_all_duplicates_save_csv(self):
+        """Test the export of the results to a .csv file."""
         shutil.copy(self.original_file, self.duplicate_file)
 
         duplicates.list_all_duplicates(
@@ -87,7 +96,8 @@ class TestDetectDuplicates(unittest.TestCase):
         expected = os.path.join(self.output_path, 'duplicateFile.csv')
         self.assertTrue(os.path.isfile(expected))
 
-    def test_find_duplicates_basic_functinality(self):
+    def test_find_duplicates_basic_functionality(self):
+        """Test if a specific file can be used as a reference to find its duplicate."""
         shutil.copy(self.original_file, self.duplicate_file)
 
         file = duplicates.filelist(self.output_path)[0]
@@ -103,6 +113,7 @@ class TestDetectDuplicates(unittest.TestCase):
         # sorting the list here to make the test run on Windows and Linux
 
     def test_compare_folders_basic_functionality(self):
+        """Test the comparison of two folders against each other."""
         reference_folder = os.path.join(self.output_path, 'reference_folder')
         compare_folder = os.path.join(self.output_path, 'compare_folder')
 
