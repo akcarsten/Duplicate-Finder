@@ -1,7 +1,8 @@
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
-.. automodule:: Duplicates.Duplicates
+.. automodule:: duplicates
    :members:
 
 .. automodule:: test_detect_duplicates
