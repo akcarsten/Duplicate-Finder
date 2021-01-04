@@ -1,5 +1,5 @@
-Documentation for the Code
-**************************
+.. toctree::
+   :maxdepth: 2
 
 .. automodule:: Duplicates.Duplicates
    :members:
