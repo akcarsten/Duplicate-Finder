@@ -61,3 +61,11 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_title = 'test'
+
+confluence_publish = True
+confluence_space_name = 'overview'
+confluence_server_url = 'https://tencars.atlassian.net/wiki/'
+confluence_server_user = os.getenv('ConfluenceEmail')
+confluence_server_pass = os.getenv('ConfluenceToken')
+confluence_page_hierarchy = True
