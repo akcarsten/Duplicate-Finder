@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name='duplicates',
+    name='Duplicate-Finder',
     version='0.0.1',
     url='https://github.com/akcarsten/duplicates.git',
     license='MIT License',
