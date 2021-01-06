@@ -3,7 +3,7 @@ import unittest
 import os.path
 import shutil
 import pandas as pd
-import duplicates
+from .context import duplicates
 
 
 class TestDetectDuplicates(unittest.TestCase):

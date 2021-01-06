@@ -40,7 +40,7 @@ pipeline {
                     '''
                 echo "Style check"
                 sh  ''' source activate ${BUILD_TAG}
-                        pylint test_detect_duplicates.py ./duplicates.py || true
+                        pylint ./tests/ ./duplicates/ || true
                     '''
             }
         }
@@ -48,7 +48,7 @@ pipeline {
     stage('Unit tests') {
           steps {
               sh  ''' source activate ${BUILD_TAG}
-                      py.test --junitxml reports/unit_tests.xml test_detect_duplicates.py
+                      py.test --junitxml reports/unit_tests.xml ./tests
                   '''
           }
           post {
