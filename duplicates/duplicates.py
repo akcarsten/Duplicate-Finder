@@ -43,18 +43,18 @@ def save_csv(csv_path: str, duplicates: pd.DataFrame) -> None:
     duplicates.to_csv(csv_file, index=False)
 
 
-def hashfile(file: str, blocksize: int = 65536) -> str:
-    """Generate the hash of any file according to the md5 algorithm."""
-    with open(file, 'rb') as afile:
-        hasher = hashlib.md5()
-        buf = afile.read(blocksize)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = afile.read(blocksize)
-        afile.close()
-        hash_id = hasher.hexdigest()
+def hashfile(file: str, block_size: int = 65536) -> str:
+    """Generate the hash of any file according to the sha256 algorithm."""
+    with open(file, 'rb') as message:
+        m = hashlib.sha256()
+        block = message.read(block_size)
+        while len(block) > 0:
+            m.update(block)
+            block = message.read(block_size)
+        message.close()
+        digest = m.hexdigest()
 
-    return hash_id
+    return digest
 
 
 def hashtable(files: list) -> list:

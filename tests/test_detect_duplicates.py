@@ -13,7 +13,7 @@ class TestDetectDuplicates(unittest.TestCase):
         self.output_path = './tmp'
         self.original_file = os.path.join(self.output_path, 'originalFile.csv')
         self.duplicate_file = os.path.join(self.output_path, 'duplicateFile.csv')
-        self.expected_hash = 'c137909ea3e82fc45bc17ccef8c691dc'
+        self.expected_hash = '49be8a4f4cdf0aee9459d036b07d1034a9f3141d27041bbccdaf11356fe40bbc'
 
         os.mkdir(self.output_path)
 
