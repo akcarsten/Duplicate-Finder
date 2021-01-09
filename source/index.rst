@@ -6,10 +6,10 @@ Documentation for the duplicates package
 
 Duplicate methods
 =========================================
-.. automodule:: duplicates
+.. automodule:: duplicates.duplicates
    :members:
 
 Duplicate test methods
 =========================================
-.. automodule:: test_detect_duplicates
+.. automodule:: tests.test_detect_duplicates
    :members:
