@@ -15,6 +15,8 @@ class TestDetectDuplicates(unittest.TestCase):
         self.duplicate_file = os.path.join(self.output_path, 'duplicateFile.csv')
         self.expected_hash = '49be8a4f4cdf0aee9459d036b07d1034a9f3141d27041bbccdaf11356fe40bbc'
 
+        self.invalid_inputs = {'file_does_not_exist': ['thisIsNotAFile', 'No hash could be generated']}
+
         os.mkdir(self.output_path)
 
         test_df = pd.DataFrame(range(0, 5), columns=['test'])
@@ -64,6 +66,13 @@ class TestDetectDuplicates(unittest.TestCase):
 
         self.assertEqual(duplicates.hashtable(input_file),
                          [self.expected_hash])
+
+    def test_hashtable_non_existing_file(self):
+        """Test the hashtable function when the input file does not exist.
+        This can also happen when paths are too long"""
+        self.invalid_inputs = {'file_does_not_exist': ['thisIsNotAFile', 'No hash could be generated']}
+        self.assertEqual(duplicates.hashtable(self.invalid_inputs[['file_does_not_exist'][0]])[0],
+                         self.invalid_inputs['file_does_not_exist'][1])
 
     def test_detection_of_duplicates(self):
         """Test the correct identification of duplicate files."""

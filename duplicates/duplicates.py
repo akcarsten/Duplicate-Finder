@@ -65,7 +65,10 @@ def hashtable(files: list) -> list:
     hash_identifier = []
     for file in files:
         print(file, end='\r')
-        hash_identifier.extend([hashfile(file)])
+        try:  # Avoid crash in case a file name is too long
+            hash_identifier.extend([hashfile(file)])
+        except OSError:
+            hash_identifier.extend(['No hash could be generated'])
 
     return hash_identifier
 
