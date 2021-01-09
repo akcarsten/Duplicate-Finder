@@ -51,7 +51,6 @@ def hashfile(file: str, block_size: int = 65536) -> str:
         while len(block) > 0:
             m.update(block)
             block = message.read(block_size)
-        message.close()
         digest = m.hexdigest()
 
     return digest
