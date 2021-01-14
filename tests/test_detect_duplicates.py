@@ -131,6 +131,10 @@ class TestDetectDuplicates(unittest.TestCase):
         self.copy_folder(compare_folder)
         reference_folder_file = self.copy_folder(reference_folder)
 
+        pd.DataFrame(range(5, 10), columns=['test']).to_csv(
+            os.path.join(reference_folder, 'uniqueFile.csv'),
+            line_terminator='\r\n')
+
         duplicate_files = duplicates.compare_folders(reference_folder, reference_folder)
 
         self.assertEqual(duplicate_files['file'].values[0], os.path.abspath(reference_folder_file))
