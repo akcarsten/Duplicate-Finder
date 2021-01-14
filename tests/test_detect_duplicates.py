@@ -135,6 +135,9 @@ class TestDetectDuplicates(unittest.TestCase):
             os.path.join(reference_folder, 'uniqueFile.csv'),
             line_terminator='\r\n')
 
-        duplicate_files = duplicates.compare_folders(reference_folder, reference_folder)
+        duplicate_files = duplicates.compare_folders(reference_folder, compare_folder)
 
-        self.assertEqual(duplicate_files['file'].values[0], os.path.abspath(reference_folder_file))
+        self.assertEqual(duplicate_files.shape[0], 1)
+        self.assertEqual(
+            os.path.basename(duplicate_files['file'].values[0]),
+            os.path.basename(reference_folder_file))
