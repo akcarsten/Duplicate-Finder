@@ -116,7 +116,10 @@ def compare_folders(reference_folder: str, compare_folder: str,
     df_reference = create_table(reference_folder, ext)
     df_compare = create_table(compare_folder, ext)
 
-    duplicate_files = df_reference[df_reference['hash'] == df_compare['hash']]
+    ind_duplicates = [x == df_reference['hash'] for x in df_compare['hash'].values]
+    duplicate_files = df_compare.iloc[ind_duplicates]
+
+    duplicate_files.drop_duplicates(subset='file', inplace=True)
 
     if to_csv is True:
         save_csv(csv_path, duplicate_files)
