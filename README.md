@@ -1,12 +1,13 @@
 # About Duplicates Finder
 
-Duplicates Finder is a simple Python package that identifies duplicate files in and across folders. 
+Duplicates Finder is a simple Python package that identifies duplicate files in and across folders.
 There are three ways to search for identical files:
 1. List all duplicate files in a folder of interest.
 2. Pick a file and find all duplications in a folder.
 3. Directly compare two folders against each other.
 
 The results are saved as a Pandas Dataframe or can be exported as .csv files.
+More information about the underlying concept can also be found in this [short article](https://towardsdatascience.com/find-duplicate-photos-and-other-files-88b0d07ef020).
 
 ---
 ## Installation
