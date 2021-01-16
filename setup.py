@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='Duplicate-Finder',
-    version='1.3.0',
+    version='1.4.0',
     url='https://github.com/akcarsten/duplicates.git',
     license='MIT License',
     author='Carsten Klein',
