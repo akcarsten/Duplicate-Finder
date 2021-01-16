@@ -40,6 +40,15 @@ class TestDetectDuplicates(unittest.TestCase):
 
         return destination_folder_file
 
+    def create_file(self, destination: str = None) -> None:
+        """Create a new .csv file in a specified folder"""
+        if destination is None:
+            destination = self.output_path
+
+        pd.DataFrame(range(5, 20), columns=['test']).to_csv(
+            os.path.join(destination, 'uniqueFile.csv'),
+            line_terminator='\r\n')
+
     def test_hash_method(self):
         """Test the generation of hash identifiers."""
         self.assertEqual(duplicates.hashfile(self.original_file),
@@ -125,9 +134,7 @@ class TestDetectDuplicates(unittest.TestCase):
         self.copy_folder(compare_folder)
         reference_folder_file = self.copy_folder(reference_folder)
 
-        pd.DataFrame(range(5, 10), columns=['test']).to_csv(
-            os.path.join(reference_folder, 'uniqueFile.csv'),
-            line_terminator='\r\n')
+        self.create_file(destination=reference_folder)
 
         duplicate_files = duplicates.compare_folders(reference_folder, compare_folder)
 
@@ -135,9 +142,14 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(
             os.path.basename(duplicate_files['file'].values[0]),
             os.path.basename(reference_folder_file))
-    '''
-    def test_fast_scan(self):
-        """Test the fast_scan function which relies first compares file sizes and only then hash."""
-        duplicates.fast_scan(self.output_path)
-    '''
 
+    def test_preselect(self):
+        """Test the preselect function to identify potential duplicates based on their size."""
+        self.create_file()
+        result = duplicates.preselect(duplicates.filelist(self.output_path))
+        result = [duplicates.format_path(file) for file in result]
+
+        self.assertEqual(sorted(list(result)),
+                         [os.path.abspath('tmp{}duplicateFile.csv'.format(os.path.sep)),
+                          os.path.abspath('tmp{}originalFile.csv'.format(os.path.sep))])
+        # sorting the list here to make the test run on Windows and Linux

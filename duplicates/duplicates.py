@@ -125,3 +125,15 @@ def compare_folders(reference_folder: str, compare_folder: str,
         save_csv(csv_path, duplicate_files)
 
     return duplicate_files
+
+
+def preselect(input_files: list) -> list:
+    """Pr-select potential duplicate files based on their size."""
+    summary_df = pd.DataFrame(columns=['file', 'size'])
+
+    summary_df['file'] = input_files
+    summary_df['size'] = [os.path.getsize(file) for file in input_files]
+
+    summary_df = summary_df[summary_df['size'].duplicated(keep=False)]
+
+    return summary_df['file'].tolist()
