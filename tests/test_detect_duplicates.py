@@ -112,6 +112,14 @@ class TestDetectDuplicates(unittest.TestCase):
         expected = os.path.join(self.output_path, 'duplicateFile.csv')
         self.assertTrue(os.path.isfile(expected))
 
+    def test_list_all_duplicates_with_fastscan(self):
+        """Test the fast scan option."""
+        duplicates.list_all_duplicates(
+            self.output_path, fastscan=True)
+
+        expected = os.path.join(self.output_path, 'duplicateFile.csv')
+        self.assertTrue(os.path.isfile(expected))
+
     def test_find_duplicates_basic_functionality(self):
         """Test if a specific file can be used as a reference to find its duplicate."""
         file = duplicates.filelist(self.output_path)[0]

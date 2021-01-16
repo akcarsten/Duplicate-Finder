@@ -4,11 +4,14 @@ import hashlib
 import pandas as pd
 
 
-def create_table(folder: str, ext: str = None) -> pd.DataFrame:
+def create_table(folder: str, ext: str = None, pre: bool = False) -> pd.DataFrame:
     """Create a Pandas dataframe with a column 'file' for the path to a file and a
     column 'hash' with the corresponding hash identifier."""
     folder = format_path(folder)
     input_files = filelist(folder, ext=ext)
+
+    if pre is True:
+        input_files = preselect(input_files)
 
     summary_df = pd.DataFrame(columns=['file', 'hash'])
 
@@ -75,12 +78,13 @@ def hashtable(files: list) -> list:
 def list_all_duplicates(folder: str,
                         to_csv: bool = False,
                         csv_path: str = './',
-                        ext: str = None) -> pd.DataFrame:
+                        ext: str = None,
+                        fastscan: bool = False) -> pd.DataFrame:
     """Go through a folder and find all duplicate files.
     The returned dataframe contains all files, not only the duplicates.
     With the 'to_csv' parameter the results can also be saved in a .csv file.
     The location of that .csv file can be specified by the 'csv_path' parameter."""
-    duplicate_files = create_table(folder, ext)
+    duplicate_files = create_table(folder, ext, pre=fastscan)
     duplicate_files = duplicate_files[duplicate_files['hash'].duplicated(keep=False)]
     duplicate_files.sort_values(by='hash', inplace=True)
 
@@ -129,10 +133,15 @@ def compare_folders(reference_folder: str, compare_folder: str,
 
 def preselect(input_files: list) -> list:
     """Pr-select potential duplicate files based on their size."""
+    checked_files = []
+    for file in input_files:
+        if os.path.isfile(file):
+            checked_files.append(file)
+
     summary_df = pd.DataFrame(columns=['file', 'size'])
 
-    summary_df['file'] = input_files
-    summary_df['size'] = [os.path.getsize(file) for file in input_files]
+    summary_df['file'] = checked_files
+    summary_df['size'] = [os.path.getsize(file) for file in checked_files]
 
     summary_df = summary_df[summary_df['size'].duplicated(keep=False)]
 
