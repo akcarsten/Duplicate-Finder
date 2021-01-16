@@ -24,6 +24,8 @@ class TestDetectDuplicates(unittest.TestCase):
         # Choosing "\r\n" here because code was written on Windows
         # but should also work on Linux machines with default "\n" line ending
 
+        shutil.copy(self.original_file, self.duplicate_file)
+
     def tearDown(self):
         shutil.rmtree(self.output_path)
 
@@ -45,7 +47,7 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_fullfile_method_without_subfolders(self):
         """Test the detection of duplicate files without the presence of sub-folders."""
-        self.assertEqual(duplicates.filelist(self.output_path)[0],
+        self.assertEqual(duplicates.filelist(self.output_path)[1],
                          self.original_file)
 
     def test_fullfile_method_with_subfolders(self):
@@ -54,7 +56,7 @@ class TestDetectDuplicates(unittest.TestCase):
         sub_folder_file = self.copy_folder(sub_folder)
 
         self.assertEqual(duplicates.filelist(self.output_path),
-                         [self.original_file, sub_folder_file])
+                         [self.duplicate_file, self.original_file, sub_folder_file])
 
     def test_fullfile_method_with_file_extension(self):
         """Test if the extension parameter works for identifying files of interest."""
@@ -64,8 +66,8 @@ class TestDetectDuplicates(unittest.TestCase):
         """Test the generation of hash identifiers from a file list."""
         input_file = duplicates.filelist(self.output_path)
 
-        self.assertEqual(duplicates.hashtable(input_file),
-                         [self.expected_hash])
+        self.assertEqual(duplicates.hashtable(input_file)[0],
+                         self.expected_hash)
 
     def test_hashtable_non_existing_file(self):
         """Test the hashtable function when the input file does not exist.
@@ -76,8 +78,6 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_detection_of_duplicates(self):
         """Test the correct identification of duplicate files."""
-        shutil.copy(self.original_file, self.duplicate_file)
-
         input_files = duplicates.filelist(self.output_path)
         result = duplicates.hashtable(input_files)
 
@@ -86,8 +86,6 @@ class TestDetectDuplicates(unittest.TestCase):
     def test_list_all_duplicates_basic_functionality(self):
         """Test the basic functionality of the package
         by validating the correct generation of the data frame."""
-        shutil.copy(self.original_file, self.duplicate_file)
-
         result = duplicates.list_all_duplicates(self.output_path)
 
         self.assertEqual(list(result.columns), ['file', 'hash'])
@@ -99,8 +97,6 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_list_all_duplicates_save_csv(self):
         """Test the export of the results to a .csv file."""
-        shutil.copy(self.original_file, self.duplicate_file)
-
         duplicates.list_all_duplicates(
             self.output_path, to_csv=True, csv_path=self.output_path)
 
@@ -109,8 +105,6 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_find_duplicates_basic_functionality(self):
         """Test if a specific file can be used as a reference to find its duplicate."""
-        shutil.copy(self.original_file, self.duplicate_file)
-
         file = duplicates.filelist(self.output_path)[0]
 
         result = duplicates.find_duplicates(file, self.output_path)
@@ -141,3 +135,9 @@ class TestDetectDuplicates(unittest.TestCase):
         self.assertEqual(
             os.path.basename(duplicate_files['file'].values[0]),
             os.path.basename(reference_folder_file))
+    '''
+    def test_fast_scan(self):
+        """Test the fast_scan function which relies first compares file sizes and only then hash."""
+        duplicates.fast_scan(self.output_path)
+    '''
+
