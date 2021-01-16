@@ -83,7 +83,9 @@ def list_all_duplicates(folder: str,
     """Go through a folder and find all duplicate files.
     The returned dataframe contains all files, not only the duplicates.
     With the 'to_csv' parameter the results can also be saved in a .csv file.
-    The location of that .csv file can be specified by the 'csv_path' parameter."""
+    The location of that .csv file can be specified by the 'csv_path' parameter.
+    To improve performance when handling large files the fastscan parameter
+    can be set to True. In this case files are pre-selected based on their size."""
     duplicate_files = create_table(folder, ext, pre=fastscan)
     duplicate_files = duplicate_files[duplicate_files['hash'].duplicated(keep=False)]
     duplicate_files.sort_values(by='hash', inplace=True)
@@ -132,7 +134,7 @@ def compare_folders(reference_folder: str, compare_folder: str,
 
 
 def preselect(input_files: list) -> list:
-    """Pr-select potential duplicate files based on their size."""
+    """Pre-select potential duplicate files based on their size."""
     checked_files = []
     for file in input_files:
         if os.path.isfile(file):

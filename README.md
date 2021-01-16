@@ -41,8 +41,10 @@ import duplicates as dup
 
 
 folder_of_interest = 'C:/manyDuplicatesHere/'
-dup.list_all_duplicates(folder_of_interest, to_csv=True, csv_path='C:/csvWithAllDuplicates/')
+dup.list_all_duplicates(folder_of_interest, to_csv=True, csv_path='C:/csvWithAllDuplicates/', fastscan=True)
 ```
+Here the _fastscan_ parameter is set to _True_ (default is false). By doing so a pre-selection of potential duplicate files
+is performed based on the file size. 
 If only a specific type of files is of interest this can be further defined by the 'ext' parameter. For example:
 ```python
 df = dup.list_all_duplicates(folder_of_interest, to_csv=True, csv_path='C:/csvWithAllDuplicates/', ext='.jpg')
