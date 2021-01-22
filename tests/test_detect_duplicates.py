@@ -64,7 +64,7 @@ class TestDetectDuplicates(unittest.TestCase):
         sub_folder = os.path.join(self.output_path, 'sub_folder')
         sub_folder_file = self.copy_folder(sub_folder)
 
-        self.assertEqual(duplicates.filelist(self.output_path),
+        self.assertEqual(sorted(list(duplicates.filelist(self.output_path))),
                          [self.duplicate_file, self.original_file, sub_folder_file])
 
     def test_fullfile_method_with_file_extension(self):
