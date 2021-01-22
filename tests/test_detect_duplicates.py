@@ -56,7 +56,7 @@ class TestDetectDuplicates(unittest.TestCase):
 
     def test_fullfile_method_without_subfolders(self):
         """Test the detection of duplicate files without the presence of sub-folders."""
-        self.assertEqual(duplicates.filelist(self.output_path)[1],
+        self.assertEqual(sorted(list(duplicates.filelist(self.output_path)))[1],
                          self.original_file)
 
     def test_fullfile_method_with_subfolders(self):
